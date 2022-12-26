@@ -55,14 +55,18 @@ exports.getProduct = (req, res, next) => {
 // };
 
 exports.getCart = (req, res, next) => {
-  req.user.getCart().then((products) => {
-    console.log(products);
-    res.render("shop/cart", {
-      path: "/cart",
-      pageTitle: "Your Cart",
-      products: products,
+  req.user
+    .populate("cart.items.productId", "title")
+    // .execPopulate()
+    .then((user) => {
+      console.log(user.cart.items);
+      const products = user.cart.items;
+      res.render("shop/cart", {
+        path: "/cart",
+        pageTitle: "Your Cart",
+        products: products,
+      });
     });
-  });
 };
 
 exports.postCart = (req, res, next) => {
