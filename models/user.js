@@ -25,6 +25,11 @@ const userSchema = new Schema({
   },
 });
 
+userSchema.methods.clearCart = function (product) {
+  this.cart = { items: [] };
+  return this.save();
+};
+
 userSchema.methods.addToCart = function (product) {
   //add custom model functions here
   const cartProductIndex = this.cart.items.findIndex((cp) => {
